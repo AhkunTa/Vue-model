@@ -1,25 +1,28 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/home/111.html">Home</router-link> |
-      <router-link to="/about.html">About</router-link>
-    </div>
-    <router-view/>
+    <RouterView></RouterView>
   </div>
 </template>
 <script>
-  export default {
-    created(){
-       this.$service('testApi',{
-      params: {
-        aa: 111
-      }
-    }).then((res)=>{
-      console.log(res)
-    })
-    }
+export default {
+  created() {
+    // this.$service("testApi", {
+    //   params: {
+    //     aa: 111
+    //   }
+    // }).then(res => {
+    //   console.log(res);
+    // });
+  
+    // this.$service('crosApi',{
+    //   params: {
+    //     pageNo:1
+    //   }
+    // }).then((res)=>{
+    //   console.log(res)
+    // })
   }
-
+};
 </script>
 <style>
 #app {

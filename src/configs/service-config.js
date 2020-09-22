@@ -8,6 +8,12 @@ let apiList = [
     method: 'get',
     baseURL: openApiContext,
     url: "/mock.json"
+  },
+  {
+    name: 'crosApi',
+    method: 'get',
+    baseURL: '/CROS',
+    url: "/"
   }
 ]
 

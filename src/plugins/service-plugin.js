@@ -1,12 +1,10 @@
 import axios from "axios";
-import {merge } from "lodash";
+import { merge } from "lodash";
 import constsUtil from "@utils/const-utils.js"
 class servicePlugin {
   install(Vue, options) {
-    let http = axios.create();
-    Vue.http = Vue.prototype.$http = http;
 
-    let consts = { ...constsUtil}
+    let consts = { ...constsUtil }
     Vue.consts = Vue.prototype.$consts = consts;
     if (options) {
       let apis = {};
@@ -26,7 +24,7 @@ class servicePlugin {
               //   options.url = api.url(options.pathParam);
               // }
               // console.log(api,options)
-              let param = merge( api, options)
+              let param = merge(api, options)
               let res = await http.request(param);
               return res.data;
             }

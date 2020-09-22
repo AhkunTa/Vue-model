@@ -1,5 +1,9 @@
 import Home from '../views/Home.vue'
 import routerConfig from '@configs/service-config.js'
+import ProvideInject from '@components/ProvideInject.vue'
+import AttrsListeners from '@components/AttrsListeners.vue'
+import Bus from '@components/Bus.vue'
+import Slot from '@components/Slot.vue'
 
   export default {
     mode: 'history',
@@ -8,8 +12,8 @@ import routerConfig from '@configs/service-config.js'
         {
             path: '/index.html',
             name: 'index',
-            component: Home
-        },
+            component: () => import(/* webpackChunkName: "Index" */ '../views/Index.vue'),
+          },
         {
           path: '/home/:userId.html',
           name: 'home',
@@ -25,6 +29,51 @@ import routerConfig from '@configs/service-config.js'
           beforeEnter(to, from, next) {
             next()
           }
+        },
+        {
+          path: '/component-communicate',
+          name: 'componentCommunicate',
+          // route level code-splitting
+          // this generates a separate chunk (about.[hash].js) for this route
+          // which is lazy-loaded when the route is visited.
+          component: () => import(/* webpackChunkName: "about" */ '../views/componentCommunicate/RouterEntry.vue'),
+          children: [
+            {
+              path: 'provide-inject.html',
+              name: 'provideInject',
+              component: ProvideInject
+            },
+            {
+              path: 'attrs-listeners.html',
+              name: 'attrsListeners',
+              component: AttrsListeners
+            },
+            {
+              path: 'bus.html',
+              name: 'bus',
+              component: Bus
+            },
+            {
+              path: 'slot.html',
+              name: 'slot',
+              component: Slot
+            }
+          ]
+        },
+        {
+          path: '/vuex-orm',
+          name: 'vuex-orm',
+          // route level code-splitting
+          // this generates a separate chunk (about.[hash].js) for this route
+          // which is lazy-loaded when the route is visited.
+          component: () => import(/* webpackChunkName: "about" */ '../views/vuexOrm/RouterEntry.vue'),
+          children: [
+            {
+              path: 'provide-inject.html',
+              name: 'provideInject',
+              component: ProvideInject
+            }
+          ]
         }
     ],
     beforeEach: (()=> {

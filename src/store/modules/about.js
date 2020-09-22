@@ -12,7 +12,6 @@ export default {
   getters: {
     countTodo: state => '数量' + state.count,
     nameTodo: (state, getters) => {
-      console.log('getters',getters)
       return '名字' + state.name +'\n'+ getters.ageTodo
     },
     ageTodo: state => '年龄' + state.age,
