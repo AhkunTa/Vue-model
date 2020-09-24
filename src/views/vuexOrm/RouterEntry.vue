@@ -1,8 +1,8 @@
 <template>
   <div class="page">
     <div class="label">
-      <div class="title">父子组件通信</div>
-      <router-link :to="{ name:'provideInject'}"  tag="div" active-class="active">provideInject</router-link>
+      <div class="title">Vue-ORM 基本操作</div>
+      <router-link :to="{ name:'provideInject'}"  tag="div" active-class="active">Vue-Orm</router-link>
     </div>
     <keep-alive>
       <router-view></router-view>
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "componentCommunicate",
+  name: "VueOrm",
   data(){
     return {
       
