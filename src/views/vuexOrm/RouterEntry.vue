@@ -2,7 +2,13 @@
   <div class="page">
     <div class="label">
       <div class="title">Vue-ORM 基本操作</div>
-      <router-link :to="{ name:'provideInject'}"  tag="div" active-class="active">Vue-Orm</router-link>
+      <router-link
+        :to="{ name: 'provideInject' }"
+        tag="div"
+        active-class="active"
+      >
+        Vue-Orm
+      </router-link>
     </div>
     <keep-alive>
       <router-view></router-view>
@@ -13,19 +19,17 @@
 <script>
 export default {
   name: "VueOrm",
-  data(){
-    return {
-      
-    }
+  data() {
+    return {};
   }
 };
 </script>
 <style scoped>
 .label {
-  border: 1px solid ;
+  border: 1px solid;
 }
 .active {
   color: #ffdb6f;
-  text-decoration: none;;
+  text-decoration: none;
 }
 </style>

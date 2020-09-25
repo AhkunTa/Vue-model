@@ -3,7 +3,7 @@
     <div>Slot</div>
     <SlotChild1>
       <template class="uuname" v-slot:default="slotProps">
-        <div class="un">作用域插槽 {{slotProps}}</div>
+        <div class="un">作用域插槽 {{ slotProps }}</div>
       </template>
       <template v-slot:slot1>
         <div class="name-slot">具名插槽</div>
@@ -33,5 +33,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

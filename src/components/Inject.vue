@@ -1,13 +1,13 @@
 <template>
   <div>
     <div>inject</div>
-    <div>{{ provideTest.testData}}</div>
+    <div>{{ provideTest.testData }}</div>
   </div>
 </template>
 
 <script>
 export default {
-  inject: ['provideTest'],
+  inject: ["provideTest"],
   // inject: {
   //   provideTest: {
   //     default: 'default'
@@ -16,12 +16,11 @@ export default {
   data() {
     return {};
   },
-  mounted(){
+  mounted() {
     setTimeout(() => {
-      this.provideTest.testData = '9999'
+      this.provideTest.testData = "9999";
     }, 2000);
   }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

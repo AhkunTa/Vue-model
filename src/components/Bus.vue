@@ -9,20 +9,19 @@
 <script>
 import Bus from "@utils/bus.js";
 
-import BusChild1 from "@components/BusChild1.vue"
-import BusChild2 from "@components/BusChild2.vue"
+import BusChild1 from "@components/BusChild1.vue";
+import BusChild2 from "@components/BusChild2.vue";
 
 export default {
   data() {
     return {};
   },
   mounted() {
-    console.log(Bus)
+    console.log(Bus);
     Bus.$on("click2", value => {
-      console.log('bus',value);
-      console.log(Bus.$emit)
+      console.log("bus", value);
+      console.log(Bus.$emit);
     });
-    
   },
   components: {
     BusChild1,
@@ -30,5 +29,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

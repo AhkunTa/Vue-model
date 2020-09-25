@@ -1,7 +1,5 @@
-
 var mininConfig = {
-    name: 'mixin'
-}
+  name: "mixin"
+};
 
-export default mininConfig
-    
+export default mininConfig;

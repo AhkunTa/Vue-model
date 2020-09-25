@@ -1,35 +1,37 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'index',
+    path: "/",
+    name: "index",
     component: Home
   },
   {
-    path: '/home',
-    name: 'home',
-    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+    path: "/home",
+    name: "home",
+    component: () => import(/* webpackChunkName: "home" */ "../views/Home.vue")
   },
   {
-    path: '/about',
-    name: 'about',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: "/about",
+    name: "about",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
-    path: '*',
-    name: '404',
-    component: () => import(/* webpackChunkName: "error" */ '../views/error.vue')
+    path: "*",
+    name: "404",
+    component: () =>
+      import(/* webpackChunkName: "error" */ "../views/error.vue")
   }
-]
+];
 
 const router = new VueRouter({
-  // mode: 'history', 
+  // mode: 'history',
   routes
-})
+});
 
-export default router
+export default router;

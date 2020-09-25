@@ -11,7 +11,6 @@ export default {
   data() {
     return {};
   },
-  mounted() {},
   methods: {
     click1() {
       Bus.$emit("click1", "click1");
@@ -19,10 +18,9 @@ export default {
   },
   mounted() {
     Bus.$on("click2", value => {
-      console.log('buschild1',value);
+      console.log("buschild1", value);
     });
   }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,30 +1,30 @@
-const path = require("path")
+const path = require("path");
 let appContext = process.env.APP_CONTEXT;
-let outputBaseDir = 'assets';
+let outputBaseDir = "assets";
 
-function fullPath(dir){
-  return path.join(__dirname,dir)
+function fullPath(dir) {
+  return path.join(__dirname, dir);
 }
 
 module.exports = {
   productionSourceMap: true,
   publicPath: appContext,
   outputDir: outputBaseDir,
-  assetsDir: 'assets',
+  assetsDir: "assets",
   css: {
     sourceMap: true
   },
-  chainWebpack:  config => {
+  chainWebpack: config => {
     config.resolve.alias
       .set("@", fullPath("src"))
       .set("@views", fullPath("src/views"))
-      .set("@plugins",fullPath("src/plugins"))
-      .set("@utils",fullPath("src/utils"))
-      .set("@configs",fullPath("src/configs"))
-      .set("@components",fullPath("src/components"))
+      .set("@plugins", fullPath("src/plugins"))
+      .set("@utils", fullPath("src/utils"))
+      .set("@configs", fullPath("src/configs"))
+      .set("@components", fullPath("src/components"));
 
-    config.when(process.env.target === 'TEST',config=> {
+    config.when(process.env.target === "TEST", config => {
       config.merge(require("./vue.config.devServer.js"));
-    })
+    });
   }
-}
+};

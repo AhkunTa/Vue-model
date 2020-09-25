@@ -6,6 +6,6 @@ module.exports = {
   /* 在对象属性添加空格 */
   // "bracketSpacing": true,
   /* 优化html闭合标签不换行的问题 */
-  "htmlWhitespaceSensitivity": "ignore",
+  htmlWhitespaceSensitivity: "ignore",
   "prettier.eslintIntegretion": true
-}
+};

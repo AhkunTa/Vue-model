@@ -1,12 +1,11 @@
-
 class MixInPlugin {
-    install(Vue,mixinConfig){
-        Vue.mixin({
-            created (){
-                // console.log(mixinConfig.name)
-            }
-        })
-    }
+  install(Vue, mixinConfig) {
+    Vue.mixin({
+      created() {
+        // console.log(mixinConfig.name)
+      }
+    });
+  }
 }
 
-export default new MixInPlugin;
+export default new MixInPlugin();

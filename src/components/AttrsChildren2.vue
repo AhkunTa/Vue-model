@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div @click="$emit('test','listenertest')"> children 2 {{$attrs}}</div>
+    <div @click="$emit('test', 'listenertest')">children 2 {{ $attrs }}</div>
   </div>
 </template>
 
@@ -23,5 +23,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

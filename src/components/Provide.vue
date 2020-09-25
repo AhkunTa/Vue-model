@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>provide</div>
-    <div>{{testData}}</div>
+    <div>{{ testData }}</div>
     <div @click="click">click</div>
     <Inject />
   </div>
@@ -16,7 +16,7 @@ export default {
     return {
       testData: "222",
       testData2: {
-        testData: '444'
+        testData: "444"
       }
     };
   },
@@ -40,22 +40,20 @@ export default {
 
   // 方法2 vue 2.6 新提供的 observable
   provide() {
-    this.provideTest = Vue.observable({ testData: '222'})
+    this.provideTest = Vue.observable({ testData: "222" });
     return {
       provideTest: this.provideTest
     };
   },
   methods: {
     click() {
-      console.log(this)
+      console.log(this);
       // this.testData2.testData = '333';
       // this.testData = "333";
-      this.provideTest.testData = '333';
+      this.provideTest.testData = "333";
     }
   },
-  created(){
-  }
+  created() {}
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>
