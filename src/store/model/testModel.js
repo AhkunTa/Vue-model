@@ -1,7 +1,7 @@
 import { Model } from "@vuex-orm/core";
-import Test from "./User";
+import Test from "./test.js";
 
-export default class Post extends Model {
+export default class TestModel extends Model {
   static entity = "testModel";
   static primaryKey = "testModelPrimarKey";
 
@@ -14,5 +14,9 @@ export default class Post extends Model {
       published: this.attr(false),
       author: this.belongsTo(Test, "user_id")
     };
+  }
+
+  static get entity() {
+    return "TestModel";
   }
 }
