@@ -2,11 +2,7 @@
   <div class="page">
     <div class="label">
       <div class="title">Vue-ORM 基本操作</div>
-      <router-link
-        :to="{ name: 'provideInject' }"
-        tag="div"
-        active-class="active"
-      >
+      <router-link :to="{ name: 'insert' }" tag="div" active-class="active">
         Vue-Orm
       </router-link>
     </div>

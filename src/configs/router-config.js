@@ -4,6 +4,7 @@ import ProvideInject from "@components/ProvideInject.vue";
 import AttrsListeners from "@components/AttrsListeners.vue";
 import Bus from "@components/Bus.vue";
 import Slot from "@components/Slot.vue";
+import OrmInsert from "@components/OrmInsert.vue";
 
 export default {
   mode: "history",
@@ -77,9 +78,9 @@ export default {
         ),
       children: [
         {
-          path: "provide-inject.html",
-          name: "provideInject",
-          component: ProvideInject
+          path: "insert.html",
+          name: "insert",
+          component: OrmInsert
         }
       ]
     }

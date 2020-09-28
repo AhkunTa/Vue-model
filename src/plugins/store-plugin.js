@@ -9,7 +9,7 @@ class storePlugin {
     let storeOptions = deepClone(storeConfig.options);
 
     storeConfig.entities.forEach(orm => {
-      this.database.register(orm.model, orm.module);
+      this.database.register(orm.model);
       models[orm.name] = orm.model;
     });
     let ormPlugin = VuexORM.install(this.database);

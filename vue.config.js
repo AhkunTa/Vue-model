@@ -21,7 +21,8 @@ module.exports = {
       .set("@plugins", fullPath("src/plugins"))
       .set("@utils", fullPath("src/utils"))
       .set("@configs", fullPath("src/configs"))
-      .set("@components", fullPath("src/components"));
+      .set("@components", fullPath("src/components"))
+      .set("@store", fullPath("src/store"));
 
     config.when(process.env.target === "TEST", config => {
       config.merge(require("./vue.config.devServer.js"));
