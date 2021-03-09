@@ -1,10 +1,16 @@
-import Home from "../views/Home.vue";
 import routerConfig from "@configs/service-config.js";
+
+import Home from "../views/Home.vue";
 import ProvideInject from "@components/ProvideInject.vue";
 import AttrsListeners from "@components/AttrsListeners.vue";
 import Bus from "@components/Bus.vue";
 import Slot from "@components/Slot.vue";
-import OrmInsert from "@components/OrmInsert.vue";
+
+// vue-orm
+import OrmInsert from "@components/vuexOrm/OrmInsert.vue";
+// computed
+import Computed from "@components/vueBasis/Computed.vue";
+import Component from "@components/vueBasis/Component.vue";
 
 export default {
   mode: "history",
@@ -41,7 +47,7 @@ export default {
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(
-          /* webpackChunkName: "about" */ "../views/componentCommunicate/RouterEntry.vue"
+          /* webpackChunkName: "componentCommunicate" */ "../views/componentCommunicate/RouterEntry.vue"
         ),
       children: [
         {
@@ -74,7 +80,7 @@ export default {
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(
-          /* webpackChunkName: "about" */ "../views/vuexOrm/RouterEntry.vue"
+          /* webpackChunkName: "vuexOrm" */ "../views/vuexOrm/RouterEntry.vue"
         ),
       children: [
         {
@@ -83,6 +89,35 @@ export default {
           component: OrmInsert
         }
       ]
+    },
+    {
+      path: "/vue-basis",
+      name: "vue-basis",
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () =>
+        import(
+          /* webpackChunkName: "vueBasis" */ "../views/vueBasis/RouterEntry.vue"
+        ),
+      children: [
+        {
+          path: "computed.html",
+          name: "computed",
+          component: Computed
+        },
+        {
+          path: "component.html",
+          name: "component",
+          component: Component
+        }
+      ]
+    },
+    {
+      path: "*",
+      name: "error",
+      component: () =>
+        import(/* webpackChunkName: "Index" */ "../views/Index.vue")
     }
   ],
   beforeEach: (() => {

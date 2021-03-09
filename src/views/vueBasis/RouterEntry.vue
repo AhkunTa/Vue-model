@@ -1,14 +1,22 @@
 <template>
   <div class="page">
     <div class="label">
-      <div class="title">Vuex-ORM 基本操作</div>
+      <div class="title">Vue基本操作</div>
       <router-link
         class="router-link"
-        :to="{ name: 'insert' }"
+        :to="{ name: 'computed' }"
         tag="div"
         active-class="active"
       >
-        Vue-Orm
+        Computed
+      </router-link>
+      <router-link
+        class="router-link"
+        :to="{ name: 'component' }"
+        tag="div"
+        active-class="active"
+      >
+        Component
       </router-link>
     </div>
     <keep-alive>

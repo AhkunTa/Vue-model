@@ -6,6 +6,7 @@
         :to="{ name: 'provideInject' }"
         tag="div"
         active-class="active"
+        class="router-link"
       >
         provideInject
       </router-link>
@@ -13,13 +14,24 @@
         :to="{ name: 'attrsListeners' }"
         tag="div"
         active-class="active"
+        class="router-link"
       >
         attrsListeners
       </router-link>
-      <router-link :to="{ name: 'bus' }" tag="div" active-class="active">
+      <router-link
+        class="router-link"
+        :to="{ name: 'bus' }"
+        tag="div"
+        active-class="active"
+      >
         bus
       </router-link>
-      <router-link :to="{ name: 'slot' }" tag="div" active-class="active">
+      <router-link
+        class="router-link"
+        :to="{ name: 'slot' }"
+        tag="div"
+        active-class="active"
+      >
         slot
       </router-link>
     </div>
@@ -44,5 +56,9 @@ export default {
 .active {
   color: #ae86ff;
   text-decoration: none;
+}
+.router-link {
+  height: 50px;
+  line-height: 50px;
 }
 </style>

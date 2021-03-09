@@ -1,15 +1,19 @@
 import { Model } from "@vuex-orm/core";
+import TestModel from "./testModel";
 
 export default class Test extends Model {
   static entity = "test";
 
-  static primaryKey = "testId";
+  // static primaryKey = "id";
 
   static fields() {
     return {
-      testId: this.attr(null),
-      name: this.attr(""),
-      email: this.attr(null)
+      user_id: this.attr(null),
+      id: this.uid(),
+      email: this.attr("example@exammple.com"),
+      hobby: this.attr(""),
+      other_id: this.attr(null),
+      user: this.belongsTo(TestModel, "user_id")
     };
   }
 }

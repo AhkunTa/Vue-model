@@ -3,14 +3,24 @@ import Test from "./test.js";
 
 export default class TestModel extends Model {
   static entity = "testModel";
-  static primaryKey = "testModelId";
+  // 主键申明
+  // static primaryKey = "id";
+
+  // static fields() {
+  //   return {
+  //     testModelId: this.attr(null),
+  //     name: this.attr(""),
+  //     sex: this.attr("man"),
+  //     author: this.belongsTo(Test, "user_id")
+  //   };
+  // }
 
   static fields() {
     return {
-      testModelId: this.attr(null),
+      id: this.number(null),
       name: this.attr(""),
       sex: this.attr("man"),
-      author: this.belongsTo(Test, "user_id")
+      profile: this.hasOne(Test, "user_id", "other_id")
     };
   }
 }
