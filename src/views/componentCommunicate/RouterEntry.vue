@@ -49,16 +49,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-.label {
-  border: 1px solid;
-}
-.active {
-  color: #ae86ff;
-  text-decoration: none;
-}
-.router-link {
-  height: 50px;
-  line-height: 50px;
-}
-</style>
+<style scoped></style>

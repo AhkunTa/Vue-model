@@ -44,4 +44,36 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+/* global style */
+
+.label {
+  border: 1px solid;
+}
+.active {
+  color: #ae86ff;
+  text-decoration: none;
+}
+.title {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px 0;
+}
+.router-link {
+  height: 50px;
+  line-height: 50px;
+}
+.btn {
+  padding: 5px;
+  background: #4586ff;
+  color: #fff;
+  /* width: 200px; */
+  border-radius: 5px;
+  text-align: center;
+}
+.item {
+  margin-top: 10px;
+  background: #f0f0f0;
+}
 </style>
