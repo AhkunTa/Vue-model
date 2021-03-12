@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="item">
+    <div class="title">child2</div>
     <div @click="$emit('test', 'listenertest')">children 2 {{ $attrs }}</div>
   </div>
 </template>
