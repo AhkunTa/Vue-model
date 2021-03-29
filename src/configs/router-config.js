@@ -12,6 +12,9 @@ import OrmInsert from "@components/vuexOrm/OrmInsert.vue";
 import Computed from "@components/vueBasis/Computed.vue";
 import Component from "@components/vueBasis/Component.vue";
 
+// Vue 原理
+import observer from "@views/vueSource/observer/observer.vue";
+
 export default {
   mode: "history",
   base: routerConfig.appContext,
@@ -110,6 +113,24 @@ export default {
           path: "component.html",
           name: "component",
           component: Component
+        }
+      ]
+    },
+    {
+      path: "/vue-source",
+      name: "vue-source",
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () =>
+        import(
+          /* webpackChunkName: "vueSource" */ "../views/vueSource/RouterEntry.vue"
+        ),
+      children: [
+        {
+          path: "observer.html",
+          name: "observer",
+          component: observer
         }
       ]
     },

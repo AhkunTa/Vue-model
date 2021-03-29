@@ -21,6 +21,12 @@
           <router-link class="btn" to="/vue-basis">计算属性</router-link>
         </div>
       </div>
+      <div class="label">
+        <div class="title">vue原理</div>
+        <div class="item-content">
+          <router-link class="btn" to="/vue-source">原理</router-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>

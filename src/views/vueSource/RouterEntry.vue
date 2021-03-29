@@ -1,22 +1,14 @@
 <template>
   <div class="page">
     <div class="label">
-      <div class="title">Vue基本操作</div>
+      <div class="title">Vue-源码部分解析 Vue版本2.5.16</div>
       <router-link
         class="router-link"
-        :to="{ name: 'computed' }"
+        :to="{ name: 'observer' }"
         tag="div"
         active-class="active"
       >
-        Computed
-      </router-link>
-      <router-link
-        class="router-link"
-        :to="{ name: 'component' }"
-        tag="div"
-        active-class="active"
-      >
-        Component
+        Observer观察器
       </router-link>
     </div>
     <keep-alive>
@@ -27,10 +19,22 @@
 
 <script>
 export default {
-  name: "VueBasis",
+  name: "VueSource",
   data() {
     return {};
   }
 };
 </script>
-<style scoped></style>
+<style scoped>
+.label {
+  border: 1px solid;
+}
+.active {
+  color: #ffdb6f;
+  text-decoration: none;
+}
+.router-link {
+  height: 50px;
+  line-height: 50px;
+}
+</style>
