@@ -27,6 +27,12 @@
           <router-link class="btn" to="/vue-source">原理</router-link>
         </div>
       </div>
+      <div class="label">
+        <div class="title">虚拟列表</div>
+        <div class="item-content">
+          <router-link class="btn" to="/virtual-list">虚拟列表</router-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>

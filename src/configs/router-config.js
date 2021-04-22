@@ -15,6 +15,10 @@ import Component from "@components/vueBasis/Component.vue";
 // Vue 原理
 import observer from "@views/vueSource/observer/observer.vue";
 
+// 虚拟列表
+import virtual1 from "@views/virtualList/virtual1.vue";
+import virtual2 from "@views/virtualList/virtual2.vue";
+
 export default {
   mode: "history",
   base: routerConfig.appContext,
@@ -131,6 +135,29 @@ export default {
           path: "observer.html",
           name: "observer",
           component: observer
+        }
+      ]
+    },
+    {
+      path: "/virtual-list",
+      name: "virtual-virtual",
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () =>
+        import(
+          /* webpackChunkName: "virtualList" */ "../views/virtualList/RouterEntry.vue"
+        ),
+      children: [
+        {
+          path: "virtual1.html",
+          name: "virtual1",
+          component: virtual1
+        },
+        {
+          path: "virtual2.html",
+          name: "virtual2",
+          component: virtual2
         }
       ]
     },
