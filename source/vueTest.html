@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <div>a: {{a}}</div>
+      <div>b: {{b}}{{b}}</div>
+      <div>
+        <div>c:{{c}}</div>
+      </div>
+      <div class="btn" v-on:click="click">点击事件测试</div>
+    </div>
+  </body>
+  <script src="./vuetest.js"></script>
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        a: 111,
+        b: 222,
+        c: 333
+      },
+      methods: {
+        click() {
+          this.data.a++;
+          console.log(this.a);
+        }
+      },
+      mounted() {
+        console.log("mounted");
+      }
+    });
+  </script>
+  <style>
+    .test-class {
+      background: #ccc;
+    }
+    .btn {
+      margin: 0 auto;
+      width: 50%;
+      height: 40px;
+      background: #4586ff;
+      text-align: center;
+      line-height: 40px;
+      border: 1px solid #ccc;
+    }
+    .render-class {
+      border: 1px solid red;
+      padding: 10px;
+      background: #ccc;
+    }
+    .render-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</html>

@@ -1,3 +1,4 @@
+/* eslint-disable */
 // git@github.com:qq281113270/vue.git
 /*!
  * Vue.js v2.5.16
@@ -774,10 +775,8 @@
     typeof Reflect !== "undefined" &&
     isNative(Reflect.ownKeys);
 
-  var _Set; // $flow-disable-line //ES6 提供了新的数据结构 Set。它类似于数组，但是成员的值都是唯一的，没有重复的值。
-  /* istanbul ignore if */ //     Set 本身是一个构造函数，用来生成 Set 数据结构。
-  //判断是否有set这个方法
-  if (typeof Set !== "undefined" && isNative(Set)) {
+  var _Set; // $flow-disable-line //ES6 提供了新的数据结构 Set。它类似于数组，但是成员的值都是唯一的，没有重复的值。 //     Set 本身是一个构造函数，用来生成 Set 数据结构。 //判断是否有set这个方法
+  /* istanbul ignore if */ if (typeof Set !== "undefined" && isNative(Set)) {
     // use native Set when available.
     _Set = Set;
   } else {
@@ -1016,6 +1015,7 @@
 
   Dep.prototype.addSub = function addSub(sub) {
     /* 在subs中添加一个Watcher对象 */
+    console.log("sub-------", sub);
     this.subs.push(sub);
   };
 
@@ -1485,8 +1485,6 @@
     //获取描述属性
     var property = Object.getOwnPropertyDescriptor(obj, key);
     var _property = Object.getOwnPropertyNames(obj); //获取实力对象属性或者方法，包括定义的描述属性
-    //(property);
-    //(_property);
 
     if (property && property.configurable === false) {
       return;
@@ -1495,12 +1493,13 @@
     // cater for pre-defined getter/setters
 
     var getter = property && property.get;
-    //('arguments.length=' + arguments.length)
 
     if (!getter && arguments.length === 2) {
       val = obj[key];
     }
     var setter = property && property.set;
+    console.log("property", property, getter, setter);
+
     //判断value 是否有__ob__    实例化 dep对象,获取dep对象  为 value添加__ob__ 属性递归把val添加到观察者中  返回 new Observer 实例化的对象
     var childOb = !shallow && observe(val);
     //定义描述
@@ -3140,10 +3139,10 @@
       }
     }
     console.log("updateListener  name:", name);
-    console.log("updateListener  def:", def);
-    console.log("updateListener  cur:", cur);
-    console.log("updateListener  old:", old);
-    console.log("updateListener  event:", event);
+    // console.log("updateListener  def:", def);
+    // console.log("updateListener  cur:", cur);
+    // console.log("updateListener  old:", old);
+    // console.log("updateListener  event:", event);
   }
 
   /*
@@ -3966,6 +3965,7 @@
 
   //初始化生命周期
   function initLifecycle(vm) {
+    console.log(vm);
     var options = vm.$options;
 
     // locate first non-abstract parent
@@ -16448,6 +16448,5 @@
   }
 
   Vue.compile = compileToFunctions;
-  // console.log(Vue._events)
   return Vue;
 });
