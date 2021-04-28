@@ -13,6 +13,7 @@
       <div>
         <div>c:{{c}}</div>
       </div>
+      <div>e {{d.e}}</div>
       <div class="btn" v-on:click="click">点击事件测试</div>
     </div>
   </body>
@@ -23,13 +24,16 @@
       data: {
         a: 111,
         b: 222,
-        c: 333
+        c: 333,
+        d: {
+          e: 444
+        }
       },
       methods: {
         click() {
           this.data.a++;
+          console.log(this);
           this.data.b++;
-          console.log(this.a);
         }
       },
       mounted() {

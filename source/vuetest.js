@@ -16,6 +16,12 @@ Dep.prototype.add = function(sub) {
   this.subs.push(sub);
 };
 
+Dep.prototype.depend = function depend() {
+  if (Dep.target) {
+    Dep.target.addDep(this);
+  }
+};
+
 Dep.target = null;
 
 /* ================== Watcher 监听器 */
@@ -25,6 +31,10 @@ var Watcher = function Watcher(vm, attr, cb) {
   this.vm = vm;
   this.cb = cb;
   this.attr = attr;
+  this.depIds = new Set();
+  this.newDepIds = new Set();
+  this.deps = []; // 观察者队列
+  this.newDeps = []; // 新的观察者队列
   this.value = this.get();
 };
 
@@ -34,13 +44,24 @@ Watcher.prototype.get = function get() {
   Dep.target = null;
   return value;
 };
+Watcher.prototype.addDep = function addDep(dep) {
+  var id = dep.id; //dep.id 一个持续相加的id
+  if (!this.newDepIds.has(id)) {
+    //如果id存在
+    this.newDepIds.add(id); //添加一个id
+    this.newDeps.push(dep); //添加一个deps
+    if (!this.depIds.has(id)) {
+      //如果depIds 不存在id则添加一个addSub  //添加一个sub
+      dep.add(this);
+    }
+  }
+};
 
 Watcher.prototype.update = function update() {
   this.run();
 };
 
 Watcher.prototype.run = function run() {
-  console.log(222);
   var value = this.vm.data[this.attr];
   var oldVal = this.value;
   if (value !== oldVal) {
@@ -53,25 +74,45 @@ Watcher.prototype.run = function run() {
 /* 观察器主要 进行对象的get set 方法劫持
    在元素发生变化时 进行通知 
 */
-function observe(data) {
-  if (!data || typeof data !== "object") return;
 
+var Observer = function Observer(data) {
+  this.data = data;
+  this.dep = new Dep();
+  // 暂不考虑数组元素 只考虑object
+  if (!data.__ob__) {
+    Object.defineProperty(data, "__ob__", {
+      value: this, //值
+      enumerable: !!true, //定义了对象的属性是否可以在 for...in 循环和 Object.keys() 中被枚举。
+      writable: true, //可以 改写 value
+      configurable: true //configurable特性表示对象的属性是否可以被删除，以及除writable特性外的其他特性是否可以被修改。
+    });
+  }
   Object.keys(data).forEach(key => {
     defineReactive(data, key, data[key]);
   });
+};
+
+function observe(data) {
+  if (!data || typeof data !== "object") return;
+
+  var ob;
+
+  ob = new Observer(data);
+  return ob;
 }
 
-function defineReactive(obj, key, val) {
+function defineReactive(obj, key, val, shallow) {
   // 递归观察val
-  observe(val);
-  let dep = new Dep();
+  let _this = this;
+  console.log(this);
+  // observe(val);
+  var dep = new Dep();
+
   Object.defineProperty(obj, key, {
     get: function getter() {
       if (Dep.target) {
         dep.add(Dep.target);
       }
-      console.log(dep);
-
       return val;
     },
     set: function setter(newVal) {
@@ -100,7 +141,6 @@ Compile.prototype.init = function() {
     let fragment = this.createDocumentFragment(this.el);
     this.compileElement(fragment);
     this.el.appendChild(fragment);
-    console.log(fragment);
   }
 };
 Compile.prototype.createDocumentFragment = function(el) {
@@ -121,7 +161,6 @@ Compile.prototype.compile = function(el) {
 Compile.prototype.compileElement = function(el) {
   let reg = /\{\{(.*?)\}\}/g;
   let childNodes = el.childNodes;
-  console.log([...childNodes]);
   let vm = this.vm;
   [...childNodes].forEach(node => {
     // 字符节点编译
@@ -350,7 +389,6 @@ function mustache(template, view) {
       val += token[1];
     }
   }
-  console.log("mustache =====", val);
   return val;
 }
 
@@ -407,6 +445,5 @@ function Vue(options) {
 
 Vue.prototype.init = function() {
   observe(this.data);
-
   new Compile(this.el, this);
 };

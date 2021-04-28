@@ -4701,6 +4701,7 @@
           );
       }
     }
+    console.log("getter----------", this.getter);
     this.value = this.lazy //   lazy为真的的时候才能获取值  这个有是组件才为真
       ? undefined
       : this.get(); //计算getter，并重新收集依赖项。 获取值
