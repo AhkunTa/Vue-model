@@ -119,25 +119,27 @@ Compile.prototype.compile = function(el) {
 };
 
 Compile.prototype.compileElement = function(el) {
-  let reg = /\{\{(.*)\}\}/;
+  let reg = /\{\{(.*?)\}\}/g;
   let childNodes = el.childNodes;
   console.log([...childNodes]);
   let vm = this.vm;
   [...childNodes].forEach(node => {
     // 字符节点编译
     if (this.isTextNode(node) && reg.test(node.nodeValue)) {
-      // 获取模板编译 内部的值 如{{a}} 则获取 a
-      let attr = reg.exec(node.nodeValue)[1];
-
-      /* 匹配大括号问题 如{{}} {{}} 匹配失败 */
-
-      // 直接渲染更新
-      console.log(node.nodeValue, attr);
-      node.nodeValue = this.vm.data[attr];
+      // // 获取模板编译 内部的值 如{{a}} 则获取 a
+      let attrArr = node.nodeValue.match(reg).map(item => {
+        return item.slice(2, -2).trim();
+      });
+      // let text = node.nodeValue.split(reg);
+      let template = node.nodeValue;
+      node.nodeValue = mustache(template, this.vm.data);
       // 调用监视器 值发生变化进行变更
-      new Watcher(this.vm, attr, (newVal, oldVal) => {
-        node.nodeValue = newVal;
-        console.log(newVal, oldVal);
+      attrArr.forEach(attr => {
+        // 调用监视器 值发生变化进行变更
+        new Watcher(this.vm, attr, (newVal, oldVal) => {
+          // 重新进行mustache渲染
+          node.nodeValue = mustache(template, this.vm.data);
+        });
       });
     } else if (this.isElementNode(node)) {
       // 节点 获取属性值
@@ -159,7 +161,7 @@ Compile.prototype.compileElement = function(el) {
               node.addEventListener(event, cb.bind(vm), false);
             }
           } else {
-            // 普通指令 v-bind v-for ...
+            // 其他指令 v-bind v-for v-model ... 待定
           }
         }
       });
@@ -183,7 +185,218 @@ Compile.prototype.isElementNode = function(node) {
 Compile.prototype.isTextNode = function(node) {
   return node.nodeType === Node.TEXT_NODE; // 文本节点 返回3
 };
-// Vue方法
+
+/* ======================== Mustache方法  */
+/* 模板编译辅助方法 mustache核心功能
+   实现mustache语法 源自mustache.js
+   https://github.com/janl/mustache.js/
+ */
+
+// mustache scanner 扫描器 主要实现了 字符串模板语法从头到尾扫描
+function Scanner(string) {
+  this.string = string;
+  this.tail = string;
+  this.pos = 0;
+}
+
+Scanner.prototype.eos = function eos() {
+  return this.tail === "";
+};
+
+Scanner.prototype.scan = function scan(re) {
+  var match = this.tail.match(re);
+
+  if (!match || match.index !== 0) return "";
+
+  var string = match[0];
+
+  this.tail = this.tail.substring(string.length);
+  this.pos += string.length;
+
+  return string;
+};
+
+Scanner.prototype.scanUntil = function scanUntil(re) {
+  var index = this.tail.search(re),
+    match;
+  switch (index) {
+    case -1:
+      match = this.tail;
+      this.tail = "";
+      break;
+    case 0:
+      match = "";
+      break;
+    default:
+      match = this.tail.substring(0, index);
+      this.tail = this.tail.substring(index);
+  }
+  this.pos += match.length;
+  return match;
+};
+
+function parseTemplate(template, tags) {
+  var openingTagRe = /\{\{\s*/;
+  var closingTagRe = /\s*\}\}/;
+
+  var whiteRe = /\s*/;
+  var spaceRe = /\s+/;
+  var equalsRe = /\s*=/;
+  var curlyRe = /\s*\}/;
+  var tagRe = /#|\^|\/|>|\{|&|=|!/;
+
+  var lineHasNonSpace = false;
+  var sections = []; // Stack to hold section tokens
+  var tokens = []; // Buffer to hold the tokens
+  var spaces = []; // Indices of whitespace tokens on the current line
+  var hasTag = false; // Is there a {{tag}} on the current line?
+  var nonSpace = false; // Is there a non-space char on the current line?
+  var indentation = ""; // Tracks indentation for tags that use it
+  var tagIndex = 0; // Stores a count of number of tags encountered on a line
+
+  var scanner = new Scanner(template);
+
+  var start, type, value, chr, token, openSection;
+  while (!scanner.eos()) {
+    start = scanner.pos;
+
+    // Match any text between tags.
+    value = scanner.scanUntil(openingTagRe);
+
+    if (value) {
+      for (var i = 0, valueLength = value.length; i < valueLength; ++i) {
+        chr = value.charAt(i);
+
+        if (/\S/.test(chr)) {
+          spaces.push(tokens.length);
+          indentation += chr;
+        } else {
+          nonSpace = true;
+          lineHasNonSpace = true;
+          indentation += " ";
+        }
+
+        tokens.push(["text", chr, start, start + 1]);
+        start += 1;
+
+        // Check for whitespace on the current line.
+        if (chr === "\n") {
+          stripSpace();
+          indentation = "";
+          tagIndex = 0;
+          lineHasNonSpace = false;
+        }
+      }
+    }
+
+    // Match the opening tag.
+    if (!scanner.scan(openingTagRe)) break;
+
+    hasTag = true;
+
+    // Get the tag type.
+    type = scanner.scan(/#|\^|\/|>|\{|&|=|!/) || "name";
+    scanner.scan(/\s*/);
+
+    // Get the tag value.
+
+    value = scanner.scanUntil(closingTagRe);
+    // Match the closing tag.
+    if (!scanner.scan(closingTagRe))
+      throw new Error("Unclosed tag at " + scanner.pos);
+    token = [type, value, start, scanner.pos];
+    tagIndex++;
+    tokens.push(token);
+    if (type === "#" || type === "^") {
+      sections.push(token);
+    } else if (type === "/") {
+      // Check section nesting.
+      openSection = sections.pop();
+      if (!openSection)
+        throw new Error('Unopened section "' + value + '" at ' + start);
+
+      if (openSection[1] !== value)
+        throw new Error(
+          'Unclosed section "' + openSection[1] + '" at ' + start
+        );
+    } else if (type === "name" || type === "{" || type === "&") {
+      nonSpace = true;
+    }
+  }
+  openSection = sections.pop();
+
+  if (openSection)
+    throw new Error(
+      'Unclosed section "' + openSection[1] + '" at ' + scanner.pos
+    );
+
+  return nestTokens(squashTokens(tokens));
+}
+
+function mustache(template, view) {
+  if (typeof template !== "string") {
+    throw new Error("template is not string");
+  }
+
+  let tokens = parseTemplate(template, view);
+  let val = "";
+  for (let i = 0; i < tokens.length; i++) {
+    let token = tokens[i];
+    let symb = token[0];
+
+    if (symb == "name") {
+      val += view[token[1]] || "";
+    } else if (symb == "text") {
+      val += token[1];
+    }
+  }
+  console.log("mustache =====", val);
+  return val;
+}
+
+function squashTokens(tokens) {
+  var squashedTokens = [];
+
+  var token, lastToken;
+  for (var i = 0, numTokens = tokens.length; i < numTokens; ++i) {
+    token = tokens[i];
+
+    if (token) {
+      if (token[0] === "text" && lastToken && lastToken[0] === "text") {
+        lastToken[1] += token[1];
+        lastToken[3] = token[3];
+      } else {
+        squashedTokens.push(token);
+        lastToken = token;
+      }
+    }
+  }
+
+  return squashedTokens;
+}
+
+function nestTokens(tokens) {
+  var nestedTokens = [];
+  var collector = nestedTokens;
+  var sections = [];
+
+  var token, section;
+  for (var i = 0, numTokens = tokens.length; i < numTokens; ++i) {
+    token = tokens[i];
+
+    switch (token[0]) {
+      default:
+        collector.push(token);
+    }
+  }
+
+  return nestedTokens;
+}
+
+/* ======================== Vue对象  */
+/*
+ */
+
 function Vue(options) {
   this.data = options.data;
   this.el = options.el;

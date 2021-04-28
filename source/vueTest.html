@@ -8,8 +8,8 @@
   </head>
   <body>
     <div id="app">
-      <div>a: {{a}}</div>
-      <div>b: {{b}}{{b}}</div>
+      <div>a: {{ a }}</div>
+      <div>b: {{ b }} 123 {{b}}</div>
       <div>
         <div>c:{{c}}</div>
       </div>
@@ -28,6 +28,7 @@
       methods: {
         click() {
           this.data.a++;
+          this.data.b++;
           console.log(this.a);
         }
       },
