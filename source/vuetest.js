@@ -79,6 +79,12 @@ var Observer = function Observer(data) {
   this.data = data;
   this.dep = new Dep();
   // 暂不考虑数组元素 只考虑object
+
+  // 判断 对象值是否继承自 Observer 否则会造成死循环 无线递归 __ob__
+  if (data instanceof Observer) {
+    return;
+  }
+
   if (!data.__ob__) {
     Object.defineProperty(data, "__ob__", {
       value: this, //值
@@ -94,20 +100,15 @@ var Observer = function Observer(data) {
 
 function observe(data) {
   if (!data || typeof data !== "object") return;
-
   var ob;
-
   ob = new Observer(data);
   return ob;
 }
 
 function defineReactive(obj, key, val, shallow) {
   // 递归观察val
-  let _this = this;
-  console.log(this);
-  // observe(val);
+  observe(val);
   var dep = new Dep();
-
   Object.defineProperty(obj, key, {
     get: function getter() {
       if (Dep.target) {

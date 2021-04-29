@@ -34,6 +34,14 @@
       >
         slot
       </router-link>
+      <router-link
+        class="router-link"
+        :to="{ name: 'emit' }"
+        tag="div"
+        active-class="active"
+      >
+        emit
+      </router-link>
     </div>
     <keep-alive>
       <router-view></router-view>

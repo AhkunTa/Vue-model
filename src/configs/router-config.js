@@ -5,6 +5,7 @@ import ProvideInject from "@components/ProvideInject.vue";
 import AttrsListeners from "@components/AttrsListeners.vue";
 import Bus from "@components/Bus.vue";
 import Slot from "@components/Slot.vue";
+import Emit from "@components/communication/emit/grand.vue";
 
 // vue-orm
 import OrmInsert from "@components/vuexOrm/OrmInsert.vue";
@@ -76,6 +77,11 @@ export default {
           path: "slot.html",
           name: "slot",
           component: Slot
+        },
+        {
+          path: "emit.html",
+          name: "emit",
+          component: Emit
         }
       ]
     },
