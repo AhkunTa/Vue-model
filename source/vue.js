@@ -1480,6 +1480,25 @@
     customSetter, //  日志函数
     shallow //是否要添加__ob__ 属性
   ) {
+    // defineReactive(
+    //   vm,
+    //   "$attrs",
+    //   (parentData && parentData.attrs) || emptyObject,
+    //   function() {
+    //     !isUpdatingChildComponent && warn("$attrs is readonly.", vm);
+    //   },
+    //   true
+    // );
+    // // 通过defineProperty的set方法去通知notify()订阅者subscribers有新的值修改
+    // defineReactive(
+    //   vm,
+    //   "$listeners",
+    //   options._parentListeners || emptyObject,
+    //   function() {
+    //     !isUpdatingChildComponent && warn("$listeners is readonly.", vm);
+    //   },
+    //   true
+    // );
     //实例化一个主题对象，对象中有空的观察者列表
     var dep = new Dep();
     //获取描述属性
@@ -1498,7 +1517,6 @@
       val = obj[key];
     }
     var setter = property && property.set;
-    console.log("property", property, getter, setter);
 
     //判断value 是否有__ob__    实例化 dep对象,获取dep对象  为 value添加__ob__ 属性递归把val添加到观察者中  返回 new Observer 实例化的对象
     var childOb = !shallow && observe(val);
@@ -3965,7 +3983,6 @@
 
   //初始化生命周期
   function initLifecycle(vm) {
-    console.log(vm);
     var options = vm.$options;
 
     // locate first non-abstract parent
@@ -4416,11 +4433,8 @@
     pushTarget();
     //在vm 中添加声明周期函数
     var handlers = vm.$options[hook];
-    //***('hook=' + hook)
-    //***('vm.$options[hook]')
-    //***(vm.$options[hook])
-    //***('==handlers==')
-    //***(handlers)
+
+    console.log("handlers hook ========", hook, handlers);
     if (handlers) {
       //数组
       for (var i = 0, j = handlers.length; i < j; i++) {
@@ -4701,7 +4715,6 @@
           );
       }
     }
-    console.log("getter----------", this.getter);
     this.value = this.lazy //   lazy为真的的时候才能获取值  这个有是组件才为真
       ? undefined
       : this.get(); //计算getter，并重新收集依赖项。 获取值
@@ -5514,6 +5527,7 @@
           }
         }
       }
+      // 返回的result 格式 为 object { a : 111, b: 222 }
       return result;
     }
   }
@@ -15039,10 +15053,6 @@
     var state = new CodegenState(options);
     //根据el判断是否是组件，或者是否含有v-once，v-if,v-for,是否有template属性，或者是slot插槽，转换style，css等转换成虚拟dom需要渲染的参数函数
     var code = ast ? genElement(ast, state) : '_c("div")';
-    console.log({
-      render: "with(this){return " + code + "}",
-      staticRenderFns: state.staticRenderFns
-    });
 
     return {
       //with 绑定js的this 缩写

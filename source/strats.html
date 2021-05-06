@@ -32,6 +32,38 @@
           number: 1
         };
       },
+      inject: {
+        aaa: {
+          default: 123
+        },
+        bbb: {
+          default: 2323
+        }
+      },
+      // beforeCreate() {
+      //   console.log("beforeCreated --- componentA");
+      // },
+      // created() {
+      //   console.log("created --- componentA");
+      // },
+      // beforeMount() {
+      //   console.log("beforeMount --- componentA");
+      // },
+      // mounted() {
+      //   console.log("mounted --- componentA");
+      // },
+      // beforeUpdate() {
+      //   console.log("beforeUpdate --- componentA");
+      // },
+      // updated() {
+      //   console.log("updated --- componentA");
+      // },
+      // beforeDestory() {
+      //   console.log("beforeDestory --- componentA");
+      // },
+      // destoried() {
+      //   console.log("destoried --- componentA");
+      // },
       //通过render创建组件而不是通过template。没有:绑定参数的操作而是直接{}绑定参数
       render(h) {
         return h(
@@ -53,6 +85,7 @@
                 },
                 on: {
                   click: () => {
+                    console.log(this);
                     this.number++;
                   }
                 }
@@ -82,6 +115,9 @@
           test: true
         }
       },
+      provide: {
+        aaa: 111
+      },
       computed: {
         aPlus: function() {
           return this.a++;
@@ -106,6 +142,30 @@
           this.c = this.c + 1;
         }
       },
+      // beforeCreate() {
+      //   console.log("beforeCreated --- 父节点");
+      // },
+      // created() {
+      //   console.log("created --- 父节点");
+      // },
+      // beforeMount() {
+      //   console.log("beforeMount --- 父节点");
+      // },
+      // mounted() {
+      //   console.log("mounted --- 父节点");
+      // },
+      // beforeUpdate() {
+      //   console.log("beforeUpdate --- 父节点");
+      // },
+      // updated() {
+      //   console.log("updated --- 父节点");
+      // },
+      // beforeDestory() {
+      //   console.log("beforeDestory --- 父节点");
+      // },
+      // destoried() {
+      //   console.log("destoried --- 父节点");
+      // },
       watch: {
         a: function(newVal, oldVal) {
           // console.log(newVal, oldVal);
