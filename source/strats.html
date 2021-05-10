@@ -106,6 +106,29 @@
       }
     };
     var ComponentB = {};
+
+    class testPlugin {
+      constructor(a, b) {
+        this.a = a;
+        this.b = b;
+        this.c = 333;
+      }
+
+      install(Vue, options, num) {
+        Vue.mixin({
+          data() {
+            return {
+              testMixIn: 999
+            };
+          }
+        });
+      }
+    }
+
+    testFunction = {
+      name: "testPlugin"
+    };
+    Vue.use(new testPlugin(111, 222), testFunction, 111);
     var vm = new Vue({
       el: "#app",
       data: {

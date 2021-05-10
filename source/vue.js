@@ -2223,7 +2223,7 @@
       //获取子值还是父组的值
       options[key] = strat(parent[key], child[key], vm, key);
     }
-
+    console.log("mixin==========", options);
     //返回参数
     return options;
   }
@@ -3103,6 +3103,8 @@
     vm //vue 实例化对象
   ) {
     var name, def, cur, old, event;
+    console.log("events on ===============", on);
+    console.log("events oldOn ===============", oldOn);
     for (name in on) {
       // 遍历on
       def = cur = on[name]; //on 新的事件值
@@ -3156,11 +3158,6 @@
         remove$$1(event.name, oldOn[name], event.capture);
       }
     }
-    console.log("updateListener  name:", name);
-    // console.log("updateListener  def:", def);
-    // console.log("updateListener  cur:", cur);
-    // console.log("updateListener  old:", old);
-    // console.log("updateListener  event:", event);
   }
 
   /*
@@ -4032,6 +4029,8 @@
       //vue 的标准 vnode
       var prevVnode = vm._vnode; //标志上一个 vonde
       //***(prevVnode)
+      console.log("vnode============  ", vnode);
+      console.log("this============  ", this);
 
       var prevActiveInstance = activeInstance;
       activeInstance = vm;
@@ -4042,14 +4041,6 @@
         //如果这个prevVnode不存在表示上一次没有创建过vnode，这个组件或者new Vue 是第一次进来
         // initial render    起始指令
         //创建dmo 虚拟dom
-        //***('vm.$el=')
-        //***(vm.$el)
-        //***(['vnode=', vnode])
-        //***(['hydrating=', hydrating])
-        //***(['vm.$options._parentElm=', vm.$options._parentElm])
-        //***(['vm.$options._refElm=', vm.$options._refElm])
-        //***( '====vm.$el===')
-        //***( vm.$el)
 
         // debugger;
         //更新虚拟dom
@@ -4061,8 +4052,6 @@
           vm.$options._parentElm, //父节点 空
           vm.$options._refElm //当前节点 空
         );
-        //***('=vm.$el=')
-        //***(vm.$el)
         // no need for the ref nodes after initial patch 初始补丁之后不需要ref节点
         // this prevents keeping a detached DOM tree in memory (#5851) 这可以防止在内存中保留分离的DOM树
         vm.$options._parentElm = vm.$options._refElm = null;
@@ -4173,7 +4162,7 @@
     hydrating
   ) {
     vm.$el = el; //dom
-    //***(vm.$options.render)
+    console.log("options.render =============", vm.$options.render);
 
     //如果参数中没有渲染
     if (!vm.$options.render) {
@@ -4230,7 +4219,7 @@
       };
     } else {
       updateComponent = function() {
-        //***(vm._render())
+        console.log("render========================", vm._render());
 
         //直接更新view试图
         vm._update(
@@ -5396,12 +5385,9 @@
         warn("$props is readonly.", this);
       };
     }
-    //***('==dataDef==')
-    //***(dataDef)
 
     Object.defineProperty(Vue.prototype, "$data", dataDef);
     Object.defineProperty(Vue.prototype, "$props", propsDef);
-
     //添加多一个数组数据或者对象数据
     Vue.prototype.$set = set;
     //删除一个数组数据或者对象数据
@@ -5993,17 +5979,6 @@
     contextVm, //vm  vue实例化对象
     children //组件子节点
   ) {
-    //***('==Ctor==')
-    //***(Ctor)
-    //***('==propsData==')
-    //***(propsData)
-    //***('==data==')
-    //***(data)
-    //***('==contextVm==')
-    //***(contextVm)
-    //***('==children==')
-    //***(children)
-
     var options = Ctor.options; //获取拓展参数
     var props = {};
     var propOptions = options.props; //获取props 参数 就是组建 定义的props 类型数据
@@ -6016,11 +5991,11 @@
         //循环 propOptions 参数
 
         /*
-                                                   验证支柱  验证 prosp 是否是规范数据 并且为props 添加 value.__ob__  属性，把prosp添加到观察者中
-                                                    *  校验 props 参数 就是组建 定义的props 类型数据，校验类型
-                                                    *
-                                                    * 判断prop.type的类型是不是Boolean或者String，如果不是他们两类型，调用getPropDefaultValue获取默认值并且把value添加到观察者模式中
-                                                    */
+        验证支柱  验证 prosp 是否是规范数据 并且为props 添加 value.__ob__  属性，把prosp添加到观察者中
+        *  校验 props 参数 就是组建 定义的props 类型数据，校验类型
+        *
+        * 判断prop.type的类型是不是Boolean或者String，如果不是他们两类型，调用getPropDefaultValue获取默认值并且把value添加到观察者模式中
+        */
         props[key] = validateProp(
           key, //key
           propOptions, //原始props 参数
@@ -7182,7 +7157,9 @@
 
       // additional parameters//额外的参数
       var args = toArray(arguments, 1); //变成真的数组
+
       args.unshift(this); //在前面添加
+
       if (typeof plugin.install === "function") {
         //如果plugin.install 是个函数 则执行安装
         plugin.install.apply(plugin, args);
@@ -8180,7 +8157,10 @@
          directives //自定义指令 创建 ，更新，销毁函数
          ]
          */
-    //***(backend)
+    console.log(
+      "patch createPatchFunction  ============================",
+      backend
+    );
 
     var i, j;
     var cbs = {};
@@ -13443,8 +13423,9 @@
     preTransforms = pluckModuleFunction(options.modules, "preTransformNode");
     //循环过滤数组或者对象的值，根据key循环 过滤对象或者数组[key]值，如果不存在则丢弃，如果有相同多个的key值，返回多个值的数组
     postTransforms = pluckModuleFunction(options.modules, "postTransformNode");
-    //***'==options==')
-    //***options)
+    console.log("transforms ========", transforms);
+    console.log("preTransforms ========", transforms);
+    console.log("postTransforms ========", transforms);
 
     /*
          拿到 key transforms值的函数
@@ -13453,16 +13434,12 @@
                transformNode$1 //函数  transformNode$1获取 style属性和:style或者v-bind的动态属性值，并且转化成字符串 添加到staticStyle和styleBinding属性中
         * ]
         * */
-    //***'==transforms==')
-    //***transforms)
     /*
          拿到 key preTransforms值的函数
          * preTransforms=[
                   preTransformNode //     preTransformNode把attrsMap与attrsList属性值转换添加到el   ast虚拟dom中为虚拟dom添加for，alias，iterator1，iterator2， addRawAttr ，type ，key， ref，slotName或者slotScope或者slot，component或者inlineTemplate ， plain，if ，else，elseif 属性
          * ]
          * */
-    //***'==preTransforms==')
-    //***preTransforms)
 
     /*
          拿到 key postTransforms值的函数
@@ -13470,8 +13447,6 @@
 
          * ]
          * */
-    //***'==postTransforms==')
-    //***postTransforms)
 
     //改变纯文本插入分隔符。修改指令的书写风格，比如默认是{{mgs}}  delimiters: ['${', '}']之后变成这样 ${mgs}
     delimiters = options.delimiters;
@@ -13820,7 +13795,7 @@
         }
       }
     );
-
+    console.log("parse   root ============", root);
     return root;
   }
   //检查标签是否有v-pre 指令 含有 v-pre 指令的标签里面的指令则不会被编译
@@ -16232,16 +16207,16 @@
       options //
     ) {
       /*
-                                                                    template, //模板字符串
-                                                                    options 参数为
-                                                                            原型中有baseOptions方法
-                                                                            {
-                                                                            shouldDecodeNewlines: shouldDecodeNewlines, //flase //IE在属性值中编码换行，而其他浏览器则不会
-                                                                            shouldDecodeNewlinesForHref: shouldDecodeNewlinesForHref, //true chrome在a[href]中编码内容
-                                                                            delimiters: options.delimiters, //改变纯文本插入分隔符。修改指令的书写风格，比如默认是{{mgs}}  delimiters: ['${', '}']之后变成这样 ${mgs}
-                                                                            comments: options.comments //当设为 true 时，将会保留且渲染模板中的 HTML 注释。默认行为是舍弃它们。
-                                                                            },
-                                                                */
+      template, //模板字符串
+      options 参数为
+              原型中有baseOptions方法
+              {
+              shouldDecodeNewlines: shouldDecodeNewlines, //flase //IE在属性值中编码换行，而其他浏览器则不会
+              shouldDecodeNewlinesForHref: shouldDecodeNewlinesForHref, //true chrome在a[href]中编码内容
+              delimiters: options.delimiters, //改变纯文本插入分隔符。修改指令的书写风格，比如默认是{{mgs}}  delimiters: ['${', '}']之后变成这样 ${mgs}
+              comments: options.comments //当设为 true 时，将会保留且渲染模板中的 HTML 注释。默认行为是舍弃它们。
+              },
+      */
       //***options)
 
       //返回ast模板对象
@@ -16273,6 +16248,9 @@
   //创建编译获取编译对象函数
   var ref$1 = createCompiler(baseOptions);
   //执行编译对象函数 compileToFunctions 是一个函数
+
+  //高阶函数
+  //  var compileToFunctions = createCompilerCreator(function baseCompile()...)(baseOptions).compileToFunctions
   var compileToFunctions = ref$1.compileToFunctions;
 
   /*  */
