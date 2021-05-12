@@ -16,6 +16,18 @@
       <div class="btn" v-on:click="click">点击事件测试</div>
       <div class="btn" v-on:click="clickGetSet">测试getset</div>
       <coma></coma>
+      <br />
+      <div class="btn" @click="push">push</div>
+      <div class="btn" @click="pop">pop</div>
+      <div class="btn" @click="splice">splice</div>
+      <div class="btn" @click="mix">mix</div>
+      <div class="btn" @click="diff">diff</div>
+
+      <!-- <div class="btn">增加</div> -->
+
+      <div v-for="(item,index) in testArr" :key="item">
+        diff 算法 比较 item: {{item}} , key: {{index}}
+      </div>
     </div>
   </body>
   <script src="./vue.js"></script>
@@ -136,7 +148,8 @@
         b: 222,
         class: {
           test: true
-        }
+        },
+        testArr: [1, 2, 3, 4]
       },
       provide: {
         aaa: 111
@@ -163,6 +176,31 @@
         },
         clickGetSet() {
           this.c = this.c + 1;
+        },
+        push() {
+          let last = this.testArr[this.testArr.length - 1];
+          this.testArr.push(++last);
+        },
+        pop() {
+          this.testArr.pop();
+        },
+        splice() {
+          this.testArr.splice(1, 1);
+        },
+        mix() {
+          //  洗牌
+          for (let i = this.testArr.length - 1; i >= 0; i--) {
+            let random = Math.floor(i * Math.random());
+            [this.testArr[random], this.testArr[i]] = [
+              this.testArr[i],
+              this.testArr[random]
+            ];
+          }
+          // 更新
+          this.testArr.splice(0, 0);
+        },
+        diff() {
+          this.testArr = [9, 8, 7, 6];
         }
       },
       // beforeCreate() {

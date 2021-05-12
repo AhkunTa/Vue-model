@@ -4030,7 +4030,7 @@
       var prevVnode = vm._vnode; //标志上一个 vonde
       //***(prevVnode)
       console.log("vnode============  ", vnode);
-      console.log("this============  ", this);
+      console.log("patch this============  ", vm);
 
       var prevActiveInstance = activeInstance;
       activeInstance = vm;
@@ -8157,10 +8157,6 @@
          directives //自定义指令 创建 ，更新，销毁函数
          ]
          */
-    console.log(
-      "patch createPatchFunction  ============================",
-      backend
-    );
 
     var i, j;
     var cbs = {};
@@ -8292,7 +8288,7 @@
         //引用节点。相反，我们在创建之前按需克隆节点
         //关联的DOM元素。
         //克隆一个新的节点
-
+        debugger;
         vnode = ownerArray[index] = cloneVNode(vnode);
       }
 
@@ -8758,20 +8754,55 @@
 
       while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
         if (isUndef(oldStartVnode)) {
+          console.log("1---------------");
           oldStartVnode = oldCh[++oldStartIdx]; // Vnode has been moved left
         } else if (isUndef(oldEndVnode)) {
+          console.log("2---------------");
           oldEndVnode = oldCh[--oldEndIdx];
         } else if (sameVnode(oldStartVnode, newStartVnode)) {
+          console.log("3---------------");
+
+          // 首节点相等 先两个节点比较 patchVnode
+          // 再将首节点索引后移一位 并更新startVnode
+
+          /*  sameVnode方法 会判断节点的基本属性 如key tag data 等
+           *    function sameVnode(a, b) {
+                  return (
+                    a.key === b.key && //如果a的key 等于b的key
+                    ((a.tag === b.tag && // 如果a的tag 等于b的tag
+                    a.isComment === b.isComment && // 如果a和b 都是注释节点
+                    isDef(a.data) === isDef(b.data) && //如果a.data 和 b.data 都定义后，是组件，或者是都含有tag属性
+                      sameInputType(a, b)) || //相同的输入类型。判断a和b的属性是否相同
+                      (isTrue(a.isAsyncPlaceholder) && //判断是否是异步的
+                        a.asyncFactory === b.asyncFactory &&
+                        isUndef(b.asyncFactory.error)))
+                  );
+                }
+           *
+           */
+
+          // 头部节点相同 就是不改变原来的dom元素的顺序
           patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue);
           oldStartVnode = oldCh[++oldStartIdx];
           newStartVnode = newCh[++newStartIdx];
         } else if (sameVnode(oldEndVnode, newEndVnode)) {
+          console.log("4---------------");
+
+          // 尾节点相等 先两个节点比较 patchVnode
+          // 再将尾索引前移一位 并更新endVnode
           patchVnode(oldEndVnode, newEndVnode, insertedVnodeQueue);
           oldEndVnode = oldCh[--oldEndIdx];
           newEndVnode = newCh[--newEndIdx];
         } else if (sameVnode(oldStartVnode, newEndVnode)) {
-          // Vnode moved right
+          console.log("5---------------");
+          // 当 旧头部子节点 和新尾部子节点相同时
+          // 例 old   a b c
+          //    new   b c a
+          // 第一次 循环 oldStartVnode = a  newEndVnode = a  oldEndVnode = c 在oldEndVnode 后插入a
+          // 即 改变元素位置 因为 新子元素 a在最后面 需将其移到最后
           patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue);
+          // 在 oldEndVnode.elm 的下一个元素之前插入 oldStartVnode.elm
+          // 即 在 oldEndVnode.elm 之后插入 oldStartVnode.elm
           canMove &&
             nodeOps.insertBefore(
               parentElm,
@@ -8781,21 +8812,27 @@
           oldStartVnode = oldCh[++oldStartIdx];
           newEndVnode = newCh[--newEndIdx];
         } else if (sameVnode(oldEndVnode, newStartVnode)) {
-          // Vnode moved left
+          console.log("6---------------");
+          // 同上 当旧尾部节点和新头部节点相同时 将旧尾部移到头部前
           patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue);
           canMove &&
             nodeOps.insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm);
           oldEndVnode = oldCh[--oldEndIdx];
           newStartVnode = newCh[++newStartIdx];
         } else {
+          //  没有任何匹配
+          console.log("7---------------");
+
           if (isUndef(oldKeyToIdx)) {
             oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx);
           }
+          //  先从 旧子节点找 和 newStartVnode的key值有没有相同的
+          //  找不到key 在 遍历 旧头节点 到 旧尾节点 依次判断是否有相同的
           idxInOld = isDef(newStartVnode.key)
             ? oldKeyToIdx[newStartVnode.key]
-            : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx);
+            : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx); // 从旧的节点中寻找和 newStartVnode 相同的节点
           if (isUndef(idxInOld)) {
-            // New element
+            // 找不到 旧新建节点
             createElm(
               newStartVnode,
               insertedVnodeQueue,
@@ -8806,8 +8843,10 @@
               newStartIdx
             );
           } else {
+            //  找到 判断找到的节点和 newStartVnode是否相同
             vnodeToMove = oldCh[idxInOld];
             if (sameVnode(vnodeToMove, newStartVnode)) {
+              // 相同
               patchVnode(vnodeToMove, newStartVnode, insertedVnodeQueue);
               oldCh[idxInOld] = undefined;
               canMove &&
@@ -8817,7 +8856,7 @@
                   oldStartVnode.elm
                 );
             } else {
-              // same key but different element. treat as new element
+              // 不相同创建新节点
               createElm(
                 newStartVnode,
                 insertedVnodeQueue,
@@ -8833,9 +8872,13 @@
         }
       }
       if (oldStartIdx > oldEndIdx) {
+        // 添加节点 这个在 数组push内容时触发 新增了元素 或者 新子元素和旧子元素没有发生顺序变化
+        // 这时 refElm 为null 即不添加新元素
         refElm = isUndef(newCh[newEndIdx + 1])
           ? null
           : newCh[newEndIdx + 1].elm;
+        console.log("8---------------", refElm);
+
         addVnodes(
           parentElm,
           refElm,
@@ -8845,6 +8888,8 @@
           insertedVnodeQueue
         );
       } else if (newStartIdx > newEndIdx) {
+        // 删除元素 在新子元素个数少于旧子元素个数时 删除多余的元素
+        console.log("9---------------");
         removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx);
       }
     }
@@ -8887,10 +8932,9 @@
     //看到这里
     function patchVnode(oldVnode, vnode, insertedVnodeQueue, removeOnly) {
       if (oldVnode === vnode) {
-        //如果他们相等
+        //引用对象相等 两者相同直接return
         return;
       }
-
       var elm = (vnode.elm = oldVnode.elm); //获取真实的dom
 
       if (isTrue(oldVnode.isAsyncPlaceholder)) {
@@ -8915,7 +8959,6 @@
         vnode.componentInstance = oldVnode.componentInstance;
         return;
       }
-
       var i;
       var data = vnode.data;
       if (isDef(data) && isDef((i = data.hook)) && isDef((i = i.prepatch))) {
@@ -8926,6 +8969,25 @@
       var ch = vnode.children;
       if (isDef(data) && isPatchable(vnode)) {
         for (i = 0; i < cbs.update.length; ++i) {
+          // 把钩子函数添加到cbs队列中
+          // cbs={
+          //'create':[],
+          //'activate':[],
+          //'update':[],
+          //'remove':[],
+          //'destroy:[]
+          //    }
+          //
+          //  将vnode 所有属性更新一遍
+          // update = [
+          // ƒ updateAttrs(oldVnode, vnode)
+          // ƒ updateClass(oldVnode, vnode)
+          // ƒ updateDOMListeners(oldVnode, vnode)
+          // ƒ updateDOMProps(oldVnode, vnode)
+          // ƒ updateStyle(oldVnode, vnode)
+          // ƒ update(oldVnode, vnode)
+          // ƒ updateDirectives(oldVnode, vnode)
+          // ]
           cbs.update[i](oldVnode, vnode);
         }
         if (isDef((i = data.hook)) && isDef((i = i.update))) {
@@ -8933,21 +8995,29 @@
         }
       }
       if (isUndef(vnode.text)) {
+        // 如果含有旧子元素和新子元素都存在
+
         if (isDef(oldCh) && isDef(ch)) {
+          // 并且不相等 则更新子元素
           if (oldCh !== ch) {
+            // 更新子元素
             updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly);
           }
         } else if (isDef(ch)) {
+          // 新子元素存在 旧子元素不存在
           if (isDef(oldVnode.text)) {
             nodeOps.setTextContent(elm, "");
           }
+          // 创建新元素
           addVnodes(elm, null, ch, 0, ch.length - 1, insertedVnodeQueue);
         } else if (isDef(oldCh)) {
+          // 旧子元素存在 新子元素不存在 则表示删除 则删除旧元素
           removeVnodes(elm, oldCh, 0, oldCh.length - 1);
         } else if (isDef(oldVnode.text)) {
           nodeOps.setTextContent(elm, "");
         }
       } else if (oldVnode.text !== vnode.text) {
+        // 如果含有旧子元素和新子元素都不存在 比较文本 不相同则更新文本节点
         nodeOps.setTextContent(elm, vnode.text);
       }
       if (isDef(data)) {
@@ -9123,15 +9193,16 @@
       parentElm, //父节点 真实的dom
       refElm //当前节点 真实的dom
     ) {
-      //***('===oldVnode===')
-      //***(oldVnode)
-      // debugger;
+      console.log("patch oldVnode=====================", oldVnode);
+      console.log("patch vnode=====================", vnode);
+
       if (isUndef(vnode)) {
         //如果没有定义新的vonde
         if (isDef(oldVnode)) {
           //如果没有定义旧的vonde
           invokeDestroyHook(oldVnode); //如果vnode不存在但是oldVnode存在，说明意图是要销毁老节点，那么就调用invokeDestroyHook(oldVnode)来进行销毁
         }
+        console.log("patch 1===========销毁");
         return;
       }
 
@@ -9139,6 +9210,8 @@
       var insertedVnodeQueue = []; //vonde队列 如果vnode上有insert钩子，那么就将这个vnode放入insertedVnodeQueue中作记录，到时再在全局批量调用insert钩子回调
 
       if (isUndef(oldVnode)) {
+        console.log("patch 2===========新建组件");
+
         //如果没有定义旧的vonde
         // empty mount (likely as component), create new root element 空挂载(可能作为组件)，创建新的根元素
         isInitialPatch = true;
@@ -9155,6 +9228,8 @@
           !isRealElement && //如果获取不到真实的dom 类型
           sameVnode(oldVnode, vnode) //sameVnode(oldVnode, vnode)2个节点的基本属性相同，那么就进入了2个节点的diff过程。
         ) {
+          console.log("patch 3===========更新组件");
+
           // patch existing root node
           //修补现有根节点
           patchVnode(
@@ -9165,9 +9240,8 @@
           );
         } else {
           if (isRealElement) {
-            // mounting to a real element
-            // check if this is server-rendered content and if we can perform
-            // a successful hydration.
+            // 此处是服务端的渲染内容 可以跳过
+            // 服务端渲染 使用在 根节点上加上 data-server-rendered 属性来来进行渲染
             if (oldVnode.nodeType === 1 && oldVnode.hasAttribute(SSR_ATTR)) {
               oldVnode.removeAttribute(SSR_ATTR);
               hydrating = true;
@@ -9189,6 +9263,7 @@
             // either not server-rendered, or hydration failed.
             // create an empty node and replace it
             oldVnode = emptyNodeAt(oldVnode);
+            console.log("patch 4===========初始化", oldVnode);
           }
 
           // replacing existing element
@@ -10806,8 +10881,6 @@
       //如果是props添加了观察者，重新克隆他，这样就可以修改了
       props = vnode.data.domProps = extend({}, props);
     }
-    consolelog(props);
-    consolelog(oldProps);
 
     for (key in oldProps) {
       //循环旧的props属性，如果没有定义了 就给空
@@ -16055,7 +16128,6 @@
           );
         }
       }
-
       return (cache[key] = res);
     };
   }
@@ -16221,7 +16293,7 @@
 
       //返回ast模板对象
       var ast = parse(template.trim(), options);
-
+      console.log("ast ===============", ast);
       if (options.optimize !== false) {
         //optimize 的主要作用是标记 static 静态节点，
         // * 循环递归虚拟node，标记是不是静态节点
