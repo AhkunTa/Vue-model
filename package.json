@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "inspect": "vue inspect > soutput.js"
+    "inspect": "vue inspect > soutput.js",
+    "node-server": "node ./backend.devServer.js"
   },
   "dependencies": {
     "@vuex-orm/core": "^0.36.3",
@@ -29,6 +30,7 @@
     "eslint-plugin-simple-import-sort": "^5.0.3",
     "eslint-plugin-vue": "^7.0.0-beta.4",
     "express": "^4.17.1",
+    "http-proxy-middleware": "^1.0.6",
     "node-sass": "^5.0.0",
     "sass": "^1.32.8",
     "sass-loader": "^11.0.1",

@@ -127,6 +127,7 @@
       }
 
       install(Vue, options, num) {
+        console.log("testPlugin ==============", this);
         Vue.mixin({
           data() {
             return {

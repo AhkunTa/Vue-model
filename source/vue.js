@@ -7154,11 +7154,14 @@
 
         return this;
       }
+      console.log("arguments ==================", arguments);
+      console.log("plugin ==================", plugin);
 
       // additional parameters//额外的参数
       var args = toArray(arguments, 1); //变成真的数组
 
       args.unshift(this); //在前面添加
+      console.log("args ==================", args);
 
       if (typeof plugin.install === "function") {
         //如果plugin.install 是个函数 则执行安装
@@ -14252,7 +14255,7 @@
             false,
             warn$2 //警告的日志
           );
-          //***el)
+          console.log("events -----------------------------------", el);
         } else {
           // normal directives 正常的指令
           //一般也不会进来这里 因为前面已经匹配了  :或者v-bind  @或者v-on:属性 开头的，所以进来这里的就是自定义指令
@@ -14546,6 +14549,7 @@
         } else if (elseIfCondition) {
           branch0.elseif = elseIfCondition;
         }
+        console.log("branch0 -------------------------------", branch0);
         //返回转换过虚拟dom的对象值
         return branch0;
       }
