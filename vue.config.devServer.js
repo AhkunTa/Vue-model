@@ -1,5 +1,6 @@
 const express = require("express");
-const httpProxyMiddleware = require("http-proxy-middleware");
+const httpProxyMiddleware = require("http-proxy-middleware")
+  .createProxyMiddleware;
 const replaceStream = require("replacestream");
 // const merge = require("lodash").merge;
 

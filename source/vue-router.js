@@ -2224,6 +2224,7 @@
     this.readyErrorCbs = [];
     this.errorCbs = [];
     this.listeners = [];
+    console.log('History ================',this)
   };
 
   History.prototype.listen = function listen (cb) {
@@ -2267,6 +2268,7 @@
     this.confirmTransition(
       route,
       function () {
+        // 完成时回调 
         this$1.updateRoute(route);
         onComplete && onComplete(route);
         this$1.ensureURL();
@@ -2283,6 +2285,7 @@
         }
       },
       function (err) {
+        // 失败回调 
         if (onAbort) {
           onAbort(err);
         }
@@ -2323,6 +2326,7 @@
       }
       onAbort && onAbort(err);
     };
+    debugger
     var lastRouteIndex = route.matched.length - 1;
     var lastCurrentIndex = current.matched.length - 1;
     if (
@@ -2331,6 +2335,7 @@
       lastRouteIndex === lastCurrentIndex &&
       route.matched[lastRouteIndex] === current.matched[lastCurrentIndex]
     ) {
+      // 路由地址相同
       this.ensureURL();
       return abort(createNavigationDuplicatedError(current, route))
     }
@@ -2556,7 +2561,9 @@
     }
 
     if ( History ) HTML5History.__proto__ = History;
+    // 将HTML5History的原型连接到 History的原型上 获取History上的原型对象
     HTML5History.prototype = Object.create( History && History.prototype );
+    // 在将其构造器重新赋值
     HTML5History.prototype.constructor = HTML5History;
 
     HTML5History.prototype.setupListeners = function setupListeners () {
@@ -2605,6 +2612,11 @@
 
       var ref = this;
       var fromRoute = ref.current;
+      // 执行跳转方法
+      /**  
+       *  
+       *  
+       */
       this.transitionTo(location, function (route) {
         pushState(cleanPath(this$1.base + route.fullPath));
         handleScroll(this$1.router, route, fromRoute, false);

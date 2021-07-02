@@ -68,9 +68,24 @@ export default {
 .label {
   margin-top: 10px;
   background: #f0f0f0;
+  display: grid;
+}
+.myClass {
+  animation-name: fadeIn; /* 不带前缀的放到最后 */
+}
+/* 复杂属性 keyframes */
+
+/* 不带前缀的放到最后 */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 </style>
-<style>
+<style lang="scss">
 * {
   font-size: 16px;
 }

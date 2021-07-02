@@ -1,4 +1,7 @@
 const path = require("path");
+let postcss = require("postcss");
+let pxtorem = require("postcss-pxtorem");
+
 let appContext = process.env.APP_CONTEXT;
 let outputBaseDir = "assets";
 // const testPlugin = require("testPlugin");
@@ -7,6 +10,8 @@ function fullPath(dir) {
   return path.join(__dirname, dir);
 }
 
+let cssOptions = {};
+
 module.exports = {
   productionSourceMap: true,
   publicPath: appContext,
@@ -14,30 +19,39 @@ module.exports = {
   assetsDir: "assets",
   css: {
     sourceMap: true
+    // loaderOptions: {
+    //   css: {
+    //     modules: {
+    //       localIdentName: '[name]-[hash]'
+    //     },
+    //     localsConvention: 'camelCaseOnly'
+    //   }
+    // }
   },
-  configureWebpack: {},
-  // module: {
-  //   rules: [
-  //     {
-  //       test: /\.sass$/,
-  //       // use:
-  //       use: [
-  //         "vue-style-loader",
-  //         "css-loader",
-  //         {
-  //           loader: "sass-loader",
-  //           options: {
-  //             indentedSyntax: true,
-  //             // sass-loader version >= 8
-  //             sassOptions: {
-  //               indentedSyntax: true
+  // configureWebpack: {
+  //   module: {
+  //     rules: [
+  //       {
+  //         test: /\.s[ac]ss$/i,
+  //         // use:
+  //         use: [
+  //           "vue-style-loader",
+  //           "css-loader",
+  //           {
+  //             loader: "sass-loader",
+  //             options: {
+  //               sassOptions: {
+  //                 indentedSyntax: true
+  //               },
+  //               sourceMap: true
   //             }
   //           }
-  //         }
-  //       ]
-  //     }
-  //   ]
+  //         ]
+  //       }
+  //     ]
+  //   }
   // },
+
   chainWebpack: config => {
     config.resolve.alias
       .set("@", fullPath("src"))
@@ -56,7 +70,20 @@ module.exports = {
     //   .test(/\.s[ac]ss$/i)
     //   .use("style-loader")
     //   .use("css-loader")
+    //   .use("postcss-loader")
     //   .use("sass-loader")
+    //   .tap(option => {
+    //     return {
+    //       ...option,
+    //       sourceMap: true
+    //     };
+    //   });
+    // config.module
+    //   .rule("css")
+    //   .test(/\.css$/i)
+    //   .use("style-loader")
+    //   .use("css-loader")
+    //   .use("postcss-loader")
     //   .tap(option => {
     //     return {
     //       ...option,

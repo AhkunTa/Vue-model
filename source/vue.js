@@ -8092,6 +8092,7 @@
 
   //sameVnode(oldVnode, vnode)2个节点的基本属性相同，那么就进入了2个节点的diff过程。
   function sameVnode(a, b) {
+    console.log("a,b ================", a, b);
     return (
       a.key === b.key && //如果a的key 等于b的key
       ((a.tag === b.tag && // 如果a的tag 等于b的tag
@@ -8999,27 +9000,38 @@
       }
       if (isUndef(vnode.text)) {
         // 如果含有旧子元素和新子元素都存在
-
+        console.log("vnode.text ============", vnode);
         if (isDef(oldCh) && isDef(ch)) {
           // 并且不相等 则更新子元素
+
           if (oldCh !== ch) {
+            console.log("10 ============");
+
             // 更新子元素
             updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly);
           }
         } else if (isDef(ch)) {
           // 新子元素存在 旧子元素不存在
+          console.log("11 ============");
+
           if (isDef(oldVnode.text)) {
             nodeOps.setTextContent(elm, "");
           }
           // 创建新元素
           addVnodes(elm, null, ch, 0, ch.length - 1, insertedVnodeQueue);
         } else if (isDef(oldCh)) {
+          console.log("12 ============");
+
           // 旧子元素存在 新子元素不存在 则表示删除 则删除旧元素
           removeVnodes(elm, oldCh, 0, oldCh.length - 1);
         } else if (isDef(oldVnode.text)) {
+          console.log("13 ============");
+
           nodeOps.setTextContent(elm, "");
         }
       } else if (oldVnode.text !== vnode.text) {
+        console.log("12 ============");
+
         // 如果含有旧子元素和新子元素都不存在 比较文本 不相同则更新文本节点
         nodeOps.setTextContent(elm, vnode.text);
       }
