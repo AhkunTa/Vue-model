@@ -156,7 +156,9 @@ export default {
     // 或者来个骚操作  在源码上其实就是触发了  __ob__.dep.notify()
     this.arrData.__ob__.dep.notify();
 
-    // 那么 问题来了 $set 原理
+    // 那么 问题来了 $set 原理 ？
+    // $set 首先判断是否是 数组 如果是数组则直接调用 splice方法
+    // 如果是对象那就按照之前 直接触发修改会自动调用__ob__的侦听方法
   }
 };
 </script>

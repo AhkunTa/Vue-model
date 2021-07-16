@@ -10,6 +10,14 @@
       >
         Observer观察器
       </router-link>
+      <router-link
+        class="router-link"
+        :to="{ name: 'showif' }"
+        tag="div"
+        active-class="active"
+      >
+        show-if原理
+      </router-link>
     </div>
     <keep-alive>
       <router-view></router-view>

@@ -80,10 +80,6 @@ export default {
       }
       return content;
     }
-  },
-  created() {},
-  mounted() {
-    this.$nextTick(() => {});
   }
 };
 </script>

@@ -55,10 +55,11 @@ export default {
   text-decoration: none;
 }
 .title {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
   text-align: center;
-  padding: 5px 0;
+  padding: 20px 0;
+  border-bottom: 1px #ccc dashed;
 }
 .router-link {
   height: 50px;

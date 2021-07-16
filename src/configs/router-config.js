@@ -15,6 +15,7 @@ import Component from "@components/vueBasis/Component.vue";
 
 // Vue 原理
 import observer from "@views/vueSource/observer/observer.vue";
+import showif from "@views/vueSource/showif/showif.vue";
 
 // 虚拟列表
 import virtual1 from "@views/virtualList/virtual1.vue";
@@ -141,6 +142,11 @@ export default {
           path: "observer.html",
           name: "observer",
           component: observer
+        },
+        {
+          path: "showif.html",
+          name: "showif",
+          component: showif
         }
       ]
     },
