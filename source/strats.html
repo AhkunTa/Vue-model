@@ -24,10 +24,26 @@
       <div class="btn" @click="diff">diff</div> -->
 
       <!-- <div class="btn">增加</div> -->
-
-      <div v-for="(item,index) in testArr" :key="index">
+      <div v-for="(item,key,index) of testArr" :key="index">
         diff 算法 比较 item: {{item}} , key: {{index}}
       </div>
+      <div v-for="(item,key,index) in forIn" :key="index">
+        <div>
+          for in 源码比较 item : {{item }} - key: {{key}} - index: {{index}}
+        </div>
+      </div>
+      <div v-for="(item,key,index) of forOf" :key="index">
+        <div>
+          for of 源码比较 item : {{item }} - key: {{key}} - index: {{index}}
+        </div>
+      </div>
+      <div v-show="false">v-show源码展示</div>
+      <div v-show="true">v-show源码展示</div>
+      <div v-if="false">v-if 源码展示1</div>
+      <div v-if="true">v-if 源码展示2</div>
+
+      <div v-if="'0'">v-if 源码展示3</div>
+      <div v-if="true">v-if 源码展示4</div>
     </div>
   </body>
   <script src="./vue.js"></script>
@@ -150,7 +166,21 @@
         class: {
           test: true
         },
-        testArr: [1, 2, 3, 4]
+        testArr: [1, 2, 3, 4],
+        forOf: [
+          {
+            name: "张三",
+            age: "18"
+          },
+          {
+            name: "李四",
+            age: "28"
+          }
+        ],
+        forIn: {
+          name: "张三",
+          age: "18"
+        }
       },
       provide: {
         aaa: 111

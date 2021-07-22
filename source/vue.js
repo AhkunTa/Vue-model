@@ -5882,14 +5882,6 @@
     parent, //vm vue实例化，如果parent也组件 也可能是VueComponent 构造函数 实例化的对象
     Ctor //VueComponent 构造函数
   ) {
-    console.log([
-      data, // vonde 虚拟dom的属性数据
-      props, //props 属性
-      children, //子节点
-      parent, //vm
-      Ctor //VueComponent 构造函数
-    ]);
-
     var options = Ctor.options;
     // ensure the createElement function in functional components
     // gets a unique context - this is necessary for correct named slot check
@@ -6884,12 +6876,13 @@
                       with(this){return _c('div',{attrs:{"id":"app"}},[_c('input',{directives:[{name:"info",rawName:"v-info"},{name:"data",rawName:"v-data"}],attrs:{"type":"text"}}),_v(" "),_m(0),_v(" "),_c('div',[_v("\n        "+_s(message)+"\n    ")])])}
                  })
                  */
-
         vnode = render.call(
           vm._renderProxy, //this指向 其实就是vm
           vm.$createElement //这里虽然传参进去但是没有接收参数
         );
-        //***(vnode)
+        console.log("vm._renderProxy ==========", vm._renderProxy);
+        console.log("_render vnode1 ==========", vnode);
+        console.log("_render render ==========", render);
       } catch (e) {
         //收集错误信息 并抛出
         handleError(e, vm, "render");
@@ -13971,11 +13964,21 @@
     var exp;
     //获取v-for指令 属性
     if ((exp = getAndRemoveAttr(el, "v-for"))) {
-      //***exp)
+      // exp 为转换后获取的 指令内容
+      // <div v-for="(item,index) in testArr">  </div>
+      // 那么 exp 则为  (item,index) in testArr
+
+      // 将其转换后并且在虚拟dom上删除这个v-for 属性
 
       //转换 for指令 获取 for中的key  返回一个res对象为{for:data字符串，alias：value字符串，iterator1:key字符串，iterator2:index字符串}
       var res = parseFor(exp);
-
+      //转换 for指令 获取 for中的key  返回一个res对象为
+      // {
+      //   alias: "item"
+      //   for: "testArr"
+      //   iterator1: "index"
+      // }
+      console.log("parseFor =========", res);
       if (res) {
         //合并浅拷贝到el中
         extend(el, res);
@@ -13995,7 +13998,6 @@
       return;
     }
     var res = {};
-    //***inMatch)
 
     res.for = inMatch[2].trim(); //获取到数据 data 字符串
     var alias = inMatch[1].trim().replace(stripParensRE, ""); //去除括号 比如(value, key, index) in data 变成 value, key, index
@@ -14004,7 +14006,6 @@
 
     if (iteratorMatch) {
       res.alias = alias.replace(forIteratorRE, ""); // value , key , index 去掉 ,+字符串 获得value 字符串
-      //***res.alias)
 
       res.iterator1 = iteratorMatch[1].trim(); //获取第二个字符串  key
       if (iteratorMatch[2]) {
@@ -15117,7 +15118,7 @@
     var state = new CodegenState(options);
     //根据el判断是否是组件，或者是否含有v-once，v-if,v-for,是否有template属性，或者是slot插槽，转换style，css等转换成虚拟dom需要渲染的参数函数
     var code = ast ? genElement(ast, state) : '_c("div")';
-
+    console.log("ast code =======", code);
     return {
       //with 绑定js的this 缩写
       render: "with(this){return " + code + "}",
@@ -16113,6 +16114,7 @@
       //把字符串 转化成真正的js并且以 函数的方式导出去
       res.render = createFunction(compiled.render, fnGenErrors);
       //字符串转化js 创建一个集合函数
+      console.log("compile res =========", res);
       res.staticRenderFns = compiled.staticRenderFns.map(function(code) {
         return createFunction(code, fnGenErrors);
       });
@@ -16124,7 +16126,6 @@
       //检查函数生成错误。
       //只有在编译器本身存在错误时才应该这样做。
       //主要用于codegen开发
-      //伊斯坦布尔忽略如果*/
       {
         if (
           (!compiled.errors || !compiled.errors.length) &&
@@ -16245,7 +16246,7 @@
           template, //template 模板
           finalOptions //finalOptions 基本参数  为虚拟dom添加基本需要的属性
         );
-
+        console.log("compiled =========", compiled);
         {
           errors.push.apply(errors, detectErrors(compiled.ast));
         }
@@ -16310,6 +16311,8 @@
       //返回ast模板对象
       var ast = parse(template.trim(), options);
       console.log("ast ===============", ast);
+      console.log("ast options ===============", options);
+
       if (options.optimize !== false) {
         //optimize 的主要作用是标记 static 静态节点，
         // * 循环递归虚拟node，标记是不是静态节点
@@ -16457,12 +16460,9 @@
           },
           this
         );
+        console.log("ref========", ref);
         // res.render = createFunction(compiled.render, fnGenErrors);
         //获取编译函数 是将字符串转化成真正js的函数
-        //***'==ref.render==')
-        //***ref.render)
-        //***ref)
-        //***'==ref.render-end==')
         // res.render = createFunction(compiled.render, fnGenErrors);
         // //字符串转化js 创建一个集合函数
         // res.staticRenderFns = compiled.staticRenderFns.map(function (code) {
@@ -16495,6 +16495,7 @@
         }
       }
     }
+    console.log("mount ========", options);
     //***render)
     //***el)
     //***hydrating)
